@@ -1,44 +1,40 @@
 #!/usr/bin/python3
+def to_subtract(list_num):
+    to_sub = 0
+    max_list = max(list_num)
+
+    for n in list_num:
+        if max_list > n:
+            to_sub += n
+
+    return (max_list - to_sub)
+
+
 def roman_to_int(roman_string):
-    if roman_string is None or not isinstance(roman_string, str):
+    if not roman_string:
         return 0
-    r_nums = {
-        'MMM': 3000,
-        'MM': 2000,
-        'M': 1000,
-        'DCCC': 800,
-        'DCC': 700,
-        'DC': 600,
-        'CCC': 300,
-        'CC': 200,
-        'CD': 400,
-        'D': 500,
-        'CM': 900,
-        'LXXX': 80,
-        'LXX': 70,
-        'LX': 60,
-        'XXX': 30,
-        'XX': 20,
-        'XL': 40,
-        'L': 50,
-        'XC': 90,
-        'C': 100,
-        'VIII': 8,
-        'VII': 7,
-        'III': 3,
-        'II': 2,
-        'VI': 6,
-        'IV': 4,
-        'V': 5,
-        'IX': 9,
-        'X': 10,
-        'I': 1,
 
-    }
-    result = 0
-    for key in r_nums.keys():
-        if key in roman_string:
-            result += r_nums[key]
-            roman_string = roman_string.replace(key, '')
+    if not isinstance(roman_string, str):
+        return 0
 
-    return result
+    rom_n = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+    list_keys = list(rom_n.keys())
+
+    num = 0
+    last_rom = 0
+    list_num = [0]
+
+    for ch in roman_string:
+        for r_num in list_keys:
+            if r_num == ch:
+                if rom_n.get(ch) <= last_rom:
+                    num += to_subtract(list_num)
+                    list_num = [rom_n.get(ch)]
+                else:
+                    list_num.append(rom_n.get(ch))
+
+                last_rom = rom_n.get(ch)
+
+    num += to_subtract(list_num)
+
+    return (num)
